@@ -16,6 +16,10 @@ public abstract class Kendaraan {
 
     public abstract long hitungBiaya(int hari);
 
+    public int getMinimalHari() {
+        return 1;
+    }
+
     public String getPlatNomor() {
         return platNomor;
     }

@@ -29,7 +29,10 @@ public class RentalView {
             return;
         } 
             for (Kendaraan k : daftar) {
-                System.out.println(k.getPlatNomor() + " | " + k.getMerk() + " | " + k.getJenis() + " | " + Format.rupiah(k.getTarifPerHari()) + " | " + (k.isTersedia() ? "Tersedia" : "Disewa"));
+                System.out.println(
+                    k.getPlatNomor() + " | " + k.getMerk() + " | " + k.getJenis()
+                    + " | " + Format.rupiah(k.getTarifPerHari()) + " | " + k.getMinimalHari() + " | "
+                    + (k.isTersedia() ? "Tersedia" : "Disewa"));
             }
     }
 
