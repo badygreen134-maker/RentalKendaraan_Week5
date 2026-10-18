@@ -6,6 +6,8 @@ import model.Penyewaan;
 import model.PenyewaanRepository;
 import view.RentalView;
 import view.StrukView;
+import java.util.List;
+import model.KendaraanFactory;
 
 public class RentalController {
     private final KendaraanRepository kendaraanRepo = new KendaraanRepository();
@@ -42,20 +44,20 @@ public class RentalController {
             return;
         }
         String merk = view.bacaTeks("Merk");
-        String jenis = view.bacaTeks("Jenis (Mobil/Motor)").toUpperCase();
-        if (!jenis.equals("MOBIL") && !jenis.equals("MOTOR")) {
-            System.out.println("Jenis kendaraan tidak valid");
+        String jenis = view.bacaTeks("Jenis (" + String.join("/", KendaraanFactory.JENIS) + ")").toUpperCase();
+        if (!List.of(KendaraanFactory.JENIS).contains(jenis)) {
+            view.tampilPesan("Jenis tidak dikenal.");
             return;
         }
 
         long tarifPerHari = view.bacaAngka("Tarif per Hari");
         if (tarifPerHari <= 0) {
-            System.out.println("Tarif harus lebih dari 0");
+            view.tampilPesan("Tarif harus lebih dari 0.");
             return;
         }
 
-        kendaraanRepo.tambah(new Kendaraan(platNomor, merk, jenis, tarifPerHari));
-        view.tampilPesan("Kendaraan berhasil ditambahkan");
+        kendaraanRepo.tambah(KendaraanFactory.buat(jenis, platNomor, merk, tarifPerHari));
+        view.tampilPesan("Kendaraan berhasil ditambahkan.");
     }
 
     public void sewaKendaraan() {
@@ -87,6 +89,6 @@ public class RentalController {
         }
         sewa.selesai();
         sewa.getKendaraan().setTersedia(true);
-        view.tampilPesan("Kendaraan" + sewa.getKendaraan().getMerk() + " berhasil dikembalikan");
+        view.tampilPesan("Kendaraan " + sewa.getKendaraan().getMerk() + " berhasil dikembalikan");
     }
 }
